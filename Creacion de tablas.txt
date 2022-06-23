@@ -1,0 +1,67 @@
+Create table if not exists Curso(
+	codigo INTEGER,
+	nombre VARCHAR(50),
+	grupo INTEGER,
+	Primary key(codigo)
+);
+Create table if not exists Horario(
+	horario_id integer,
+	hora_inicio time,
+	hora_fin time,
+	Primary key(horario_id)
+);
+Create table if not exists Profesor(
+	identificacion integer,
+	nombre varchar(50),
+	apellidos varchar(50),
+	Primary key(identificacion)
+);
+Create table if not exists Programa(
+	codigo integer,
+	nombre varchar(50),
+	jornada varchar(50),
+	primary key(codigo)
+);
+Create table if not exists Semestre(
+	semestre_id integer,
+	numero integer,
+	Primary key(semestre_id)
+);
+Create table if not exists Estudiante(
+	codigo integer,
+	nombre varchar(50),
+	apellidos varchar(50),
+	codigo_curso integer,
+	codigo_programa integer,
+	semestre_id integer,
+	primary key(codigo),
+	foreign key(codigo_curso) references Curso(codigo),
+	foreign key(codigo_programa) references Programa(codigo),
+	foreign key(semestre_id) references Semestre(semestre_id)
+);
+Create table if not exists TipodeCancelacion(
+	idcancelacion integer,
+	nombre varchar(50),
+	clase_realizada boolean,
+	primary key(idcancelacion)
+);
+Create table if not exists Clase(
+	id_clase integer,
+	fecha date,
+	identificacion_profesor integer,
+	horario_id integer,
+	codigo_curso integer,
+	primary key(id_clase),
+	foreign key(identificacion_profesor) references Profesor(identificacion),
+	foreign key(horario_id) references Horario(horario_id),
+	foreign key(codigo_curso) references Curso(codigo)
+);
+Create table if not exists Asistencia(
+	id_asistencia integer,
+	asiste boolean,
+	id_clase integer,
+	codigo_estudiante integer,
+	Primary key(id_asistencia),
+	Foreign key(id_clase) references Clase(id_clase),
+	Foreign key(codigo_estudiante) references Estudiante(codigo)
+);

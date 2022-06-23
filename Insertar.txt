@@ -1,0 +1,71 @@
+create view totalclasesasistencia as
+Select asistencia.asiste,asistencia.codigo_estudiante,clase.fecha,estudiante.nombre,estudiante.apellidos,estudiante.codigo_programa From asistencia
+inner join clase on asistencia.id_clase = clase.id_clase
+inner join estudiante on asistencia.codigo_estudiante = estudiante.codigo;
+
+create view totalasistencia as
+SELECT asistencia.id_asistencia,
+    asistencia.asiste,
+    asistencia.id_clase,
+    asistencia.codigo_estudiante
+   FROM asistencia;
+
+create view totalprogramas as
+ SELECT programa.codigo,
+    programa.nombre,
+    programa.jornada
+   FROM programa;
+
+create view totalsemestres as
+ SELECT semestre.semestre_id,
+    semestre.numero
+   FROM semestre;
+
+CREATE OR REPLACE Function insertarestudiante (codigo integer, nombre varchar, apellidos varchar, codigocurso integer, codigoprograma integer, semestreid integer) returns void
+AS
+$$
+insert into estudiante(codigo,nombre,apellidos,codigo_curso,codigo_programa,semestre_id) values(codigo,nombre,apellidos,codigocurso,codigoprograma,semestreid);
+$$
+language SQL
+
+CREATE OR REPLACE Function insertarcurso (codigo integer, nombre varchar, grupo integer) returns void
+AS
+$$
+insert into curso(codigo,nombre,grupo) values (codigo, nombre,grupo);
+$$
+language SQL
+
+CREATE OR REPLACE Function insertarprofesor (identificacion integer, nombre varchar, apellidos varchar) returns void
+AS
+$$
+insert into profesor(identificacion,nombre,apellidos) VALUES(identificacion, nombre, apellidos);
+$$
+language SQL
+
+CREATE OR REPLACE Function insertarasistencia (idasist integer, asiste boolean, idclase integer, codigoest integer) returns void
+AS
+$$
+insert into asistencia(id_asistencia,asiste,id_clase,codigo_estudiante) values (idasist, asiste, idclase, codigoest);
+$$
+language SQL
+
+CREATE OR REPLACE Function insertarclase (idc integer, fecha date, identificacion integer, horario integer, curso integer, foto bytea) returns void
+AS
+$$
+insert into clase(id_clase,fecha,identificacion_profesor,horario_id,codigo_curso,foto) values (idc,fecha,identificacion,horario,curso,foto);
+$$
+language SQL
+
+CREATE OR REPLACE Function insertarsemestre (semestre_id integer, numero integer) returns void
+AS
+$$
+insert into semestre(semestre_id, numero) values (semestre_id, numero);
+$$
+language SQL
+
+CREATE OR REPLACE Function insertarprograma (codigo integer, nombre varchar, jornada varchar) returns void
+AS
+$$
+insert into programa(codigo, nombre, jornada) values (codigo, nombre, jornada);
+$$
+language SQL
